@@ -19,6 +19,14 @@ Route::get('/', function () {
 });
 
 
+Route::get('/subs', function () {
+    if(Gate::allows('subs-only', Auth::user())){
+        return view('subs');
+    }else{
+        return 'You are not a subscriber, subscribe now';
+    }
+});
+
 
 Route::get('/send-email', function () {
 
