@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role_id'
     ];
 
     /**
@@ -36,4 +36,37 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The methodes that should be check user's role.
+     *
+     * @method
+     */
+
+    public function isAdmin()
+    {
+        return $this->role_id == env('ADMIN_ROLE_ID', 1);
+    }
+
+    public function isStudent()
+    {
+        return $this->role_id == env('STUDENT_ROLE_ID', 2);
+    }
+
+    public function isAuthorize()
+    {
+        if(is_null($this->role_id)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the type of the user.
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }
